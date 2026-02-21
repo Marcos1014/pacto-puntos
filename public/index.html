@@ -133,6 +133,40 @@ body {
   font-weight: 600; z-index: 200; opacity: 0; transition: opacity 0.3s;
 }
 .toast.show { opacity: 1; }
+
+/* Reglamento */
+.reglamento { padding-bottom: 20px; }
+.pacto-intro {
+  background: var(--card); border-radius: 12px; padding: 16px;
+  margin-bottom: 16px; color: var(--muted); line-height: 1.6; font-size: 0.9em;
+}
+.pacto-chapter {
+  background: var(--card); border-radius: 12px; margin-bottom: 10px;
+  overflow: hidden; border: 1px solid transparent; transition: border-color 0.2s;
+}
+.pacto-chapter.open { border-color: var(--accent); }
+.chapter-title {
+  padding: 14px 16px; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center;
+  font-weight: 600; font-size: 0.95em;
+  transition: background 0.2s;
+}
+.chapter-title:active { background: rgba(78, 205, 196, 0.1); }
+.chevron {
+  font-size: 0.7em; color: var(--muted);
+  transition: transform 0.2s;
+}
+.pacto-chapter.open .chevron { transform: rotate(180deg); }
+.chapter-body {
+  max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+}
+.pacto-chapter.open .chapter-body { max-height: 2000px; }
+.articulo {
+  padding: 10px 16px; font-size: 0.85em; line-height: 1.6;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  color: var(--text);
+}
+.articulo strong { color: var(--accent); }
 </style>
 </head>
 <body>
@@ -195,12 +229,135 @@ body {
     <div id="historyList"></div>
   </div>
 
+  <div id="secReglas" class="section">
+    <div class="section-title">📜 Pacto de Convivencia de Viaje</div>
+    <div class="reglamento">
+      <div class="pacto-intro">
+        <em>Considerando que ambas partes se quieren pero también se sacan de quicio, y que 14 días de convivencia 24/7 en espacios reducidos pueden destruir lo que años de relación construyeron, se establece el siguiente pacto de mutuo respeto y supervivencia.</em>
+      </div>
+
+      <div class="pacto-chapter">
+        <div class="chapter-title" onclick="this.parentElement.classList.toggle('open')">
+          <span>Cap. 1 — Tiempos y Rutinas</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="chapter-body">
+          <div class="articulo"><strong>Art. 1 — Hora de salida.</strong> Se acordará la noche anterior a qué hora se sale. Una vez acordada, hay <strong>15 min de tolerancia</strong>. Pasados esos 15 min, la parte que esté lista puede manifestar disgusto legítimamente.</div>
+          <div class="articulo"><strong>Art. 2 — Tiempo de preparación.</strong> Cada parte conoce cuánto tarda. Es responsabilidad de cada uno calcular su tiempo y levantarse acorde. No se aceptan "5 minutitos más" reiterados.</div>
+          <div class="articulo"><strong>Art. 3 — Descanso vs. Actividad.</strong> Si un día uno quiere explorar y el otro quedarse, <strong>está permitido separarse por unas horas</strong>. No es abandono, es salud mental.</div>
+          <div class="articulo"><strong>Art. 4 — Siesta sagrada.</strong> Si una parte necesita descansar después del almuerzo, la otra lo respeta. Máximo 1 hora. No se juzga.</div>
+          <div class="articulo"><strong>Art. 5 — Hora de dormir.</strong> Si uno quiere dormir y el otro no tiene sueño, el que está despierto baja el volumen/brillo y respeta el descanso del otro.</div>
+        </div>
+      </div>
+
+      <div class="pacto-chapter">
+        <div class="chapter-title" onclick="this.parentElement.classList.toggle('open')">
+          <span>Cap. 2 — Comunicación</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="chapter-body">
+          <div class="articulo"><strong>Art. 6 — Regla de los 10 segundos.</strong> Antes de decir algo con bronca, contar hasta 10. Si después sigue pareciendo necesario, decirlo pero <strong>sin levantar la voz</strong>.</div>
+          <div class="articulo"><strong>Art. 7 — Prohibido acumular.</strong> Si algo molesta, se dice <strong>en el momento</strong> con respeto. Prohibido guardarse 5 quejas y largarlas juntas.</div>
+          <div class="articulo"><strong>Art. 8 — Frase de emergencia: "Necesito 10 minutos".</strong> Cuando alguien la dice, la otra parte respeta el espacio. Sin preguntas. 10 min de silencio y después se habla.</div>
+          <div class="articulo"><strong>Art. 9 — No al sarcasmo destructivo.</strong> El humor está bien. Las indirectas pasivo-agresivas no.</div>
+          <div class="articulo"><strong>Art. 10 — Prohibido invocar peleas pasadas.</strong> Este viaje empieza de cero.</div>
+        </div>
+      </div>
+
+      <div class="pacto-chapter">
+        <div class="chapter-title" onclick="this.parentElement.classList.toggle('open')">
+          <span>Cap. 3 — Plata</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="chapter-body">
+          <div class="articulo"><strong>Art. 11 — Método de gastos.</strong> Se elige UNO y se respeta: cada uno paga lo suyo / fondo común / uno paga y se divide / se van alternando.</div>
+          <div class="articulo"><strong>Art. 12 — Gastos grandes.</strong> Cualquier gasto individual grande se consulta antes. Sin excepciones.</div>
+          <div class="articulo"><strong>Art. 13 — No juzgar gastos del otro.</strong> Si ella/él quiere comprarse algo con su plata, no opinar salvo que pida opinión.</div>
+          <div class="articulo"><strong>Art. 14 — Registro.</strong> Llevar una nota compartida (Splitwise, etc.) para evitar el "yo pagué más".</div>
+        </div>
+      </div>
+
+      <div class="pacto-chapter">
+        <div class="chapter-title" onclick="this.parentElement.classList.toggle('open')">
+          <span>Cap. 4 — Espacio Personal</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="chapter-body">
+          <div class="articulo"><strong>Art. 15 — Derecho al silencio.</strong> Estar callado no significa estar enojado. Se respeta sin interrogatorio.</div>
+          <div class="articulo"><strong>Art. 16 — Celular.</strong> Cada uno usa su celular sin comentarios. PERO: durante comidas juntos, se guardan (salvo para fotos de la comida).</div>
+          <div class="articulo"><strong>Art. 17 — Espacio en la habitación.</strong> Cada uno tiene su lado de la cama y su zona de valija. No invadir.</div>
+          <div class="articulo"><strong>Art. 18 — Baño.</strong> Se acuerda un orden. El que tarda más va primero o se levanta antes. No se vale monopolizar el baño.</div>
+          <div class="articulo"><strong>Art. 19 — Tiempo a solas.</strong> Cada parte tiene derecho a pedir <strong>mínimo 1 hora por día</strong> para estar sola. No es negociable.</div>
+        </div>
+      </div>
+
+      <div class="pacto-chapter">
+        <div class="chapter-title" onclick="this.parentElement.classList.toggle('open')">
+          <span>Cap. 5 — Decisiones</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="chapter-body">
+          <div class="articulo"><strong>Art. 20 — Dónde comer.</strong> Se alterna: un día elige uno, al siguiente el otro. La decisión final es del que tiene el "turno".</div>
+          <div class="articulo"><strong>Art. 21 — Qué hacer.</strong> Se arma la noche anterior un plan tentativo. Ambas partes proponen. Se negocia.</div>
+          <div class="articulo"><strong>Art. 22 — Cambio de planes.</strong> Si el plan cambia sobre la marcha, se comunica sin drama.</div>
+          <div class="articulo"><strong>Art. 23 — Fotos.</strong> Prohibido obligar al otro a posar 47 veces. <strong>Máximo 3 intentos por foto.</strong></div>
+        </div>
+      </div>
+
+      <div class="pacto-chapter">
+        <div class="chapter-title" onclick="this.parentElement.classList.toggle('open')">
+          <span>Cap. 6 — Conflictos</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="chapter-body">
+          <div class="articulo"><strong>Art. 24 — Escala de conflicto.</strong><br>
+            1. <strong>Molestia menor</strong> → Se dice una vez, se ajusta, se sigue.<br>
+            2. <strong>Conflicto medio</strong> → Frase de emergencia (Art. 8), se habla después.<br>
+            3. <strong>Pelea grande</strong> → Se separan mínimo 30 min. Se juntan cuando estén calmados.</div>
+          <div class="articulo"><strong>Art. 25 — Prohibido arruinar el día.</strong> Si hubo pelea a la mañana, se resuelve o se pausa, pero <strong>no se arrastra todo el día</strong>.</div>
+          <div class="articulo"><strong>Art. 26 — No involucrar terceros.</strong> Los problemas se resuelven entre los dos. No se llama a mamá/amigos para que tomen partido en el momento.</div>
+          <div class="articulo"><strong>Art. 27 — Perdón genuino.</strong> Si alguien pide perdón y el otro acepta, <strong>SE TERMINÓ</strong>. No se puede aceptar un perdón y seguir con cara de culo 3 horas.</div>
+        </div>
+      </div>
+
+      <div class="pacto-chapter">
+        <div class="chapter-title" onclick="this.parentElement.classList.toggle('open')">
+          <span>Cap. 7 — Logística</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="chapter-body">
+          <div class="articulo"><strong>Art. 28 — Puntualidad.</strong> Se llega con el margen que diga el más precavido. En transporte no se jode.</div>
+          <div class="articulo"><strong>Art. 29 — Equipaje.</strong> Cada uno es responsable de sus cosas.</div>
+          <div class="articulo"><strong>Art. 30 — Documentación.</strong> Cada uno lleva sus documentos. El otro tiene foto de DNI por emergencia.</div>
+          <div class="articulo"><strong>Art. 31 — Salud.</strong> Si uno se siente mal, el otro lo cuida sin quejas ni "te dije". Primero cuidar, después opinar.</div>
+        </div>
+      </div>
+
+      <div class="pacto-chapter">
+        <div class="chapter-title" onclick="this.parentElement.classList.toggle('open')">
+          <span>Cap. 8 — Diversión</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="chapter-body">
+          <div class="articulo"><strong>Art. 32 — Regla de oro.</strong> El objetivo del viaje es <strong>pasarla bien juntos</strong>. Cuando estén por pelear, recordar que eligieron estar ahí juntos.</div>
+          <div class="articulo"><strong>Art. 33 — Una cosa nueva por día.</strong> Probar comida rara, entrar a un lugar random, hablar con un desconocido.</div>
+          <div class="articulo"><strong>Art. 34 — Celebrar lo bueno.</strong> "La pasé muy bien hoy" vale más que cualquier regalo.</div>
+        </div>
+      </div>
+
+      <div class="pacto-intro" style="margin-top:16px; text-align:center;">
+        <em>"Viajamos juntos porque nos elegimos. Que este viaje nos sume, no nos reste."</em>
+      </div>
+    </div>
+  </div>
+
   <!-- Tabs -->
   <div class="tabs">
     <div class="tab active" onclick="switchTab('Gestos')"><span class="icon">📝</span>Cargar</div>
     <div class="tab" onclick="switchTab('Review')"><span class="icon">🔍</span>Revisar</div>
     <div class="tab" onclick="switchTab('Canjes')"><span class="icon">🎁</span>Canjes</div>
     <div class="tab" onclick="switchTab('History')"><span class="icon">📊</span>Historial</div>
+    <div class="tab" onclick="switchTab('Reglas')"><span class="icon">📜</span>Pacto</div>
   </div>
 </div>
 
