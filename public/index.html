@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🧭 Pacto de Puntos — Viaje al Sur</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0f1923;
+  --card: #1a2a3a;
+  --accent: #4ecdc4;
+  --accent2: #ff6b6b;
+  --gold: #ffd93d;
+  --text: #e8e8e8;
+  --muted: #8899aa;
+  --success: #2ecc71;
+  --danger: #e74c3c;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* Login */
+.login-screen {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 20px; text-align: center;
+}
+.login-screen h1 { font-size: 2em; margin-bottom: 8px; }
+.login-screen .subtitle { color: var(--muted); margin-bottom: 40px; font-size: 0.95em; }
+.login-btn {
+  display: block; width: 200px; padding: 16px; margin: 10px auto;
+  border: 2px solid var(--accent); background: transparent; color: var(--accent);
+  border-radius: 12px; font-size: 1.1em; cursor: pointer; transition: all 0.2s;
+}
+.login-btn:active { background: var(--accent); color: var(--bg); }
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #1a2a3a, #2a3a4a);
+  padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 2px solid var(--accent);
+}
+.header .user-info { font-size: 1.1em; font-weight: 600; }
+.header .logout { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.9em; }
+
+/* Score cards */
+.scores {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  padding: 16px 20px;
+}
+.score-card {
+  background: var(--card); border-radius: 14px; padding: 16px; text-align: center;
+}
+.score-card.mine { border: 2px solid var(--accent); }
+.score-card.other { border: 2px solid var(--accent2); }
+.score-card .label { font-size: 0.8em; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.score-card .pts { font-size: 2.2em; font-weight: 700; margin: 4px 0; }
+.score-card.mine .pts { color: var(--accent); }
+.score-card.other .pts { color: var(--accent2); }
+
+/* Review banner */
+.review-banner {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  margin: 0 20px; padding: 12px 16px; border-radius: 10px;
+  text-align: center; font-weight: 600; display: none;
+}
+.review-banner.active { display: block; }
+
+/* Tabs */
+.tabs {
+  display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+  background: #1a2a3a; border-top: 1px solid #2a3a4a; z-index: 100;
+}
+.tab {
+  flex: 1; padding: 12px 0; text-align: center; cursor: pointer;
+  font-size: 0.75em; color: var(--muted); transition: color 0.2s;
+}
+.tab.active { color: var(--accent); }
+.tab .icon { font-size: 1.5em; display: block; margin-bottom: 2px; }
+
+/* Sections */
+.section { display: none; padding: 16px 20px; }
+.section.active { display: block; }
+
+/* Gesto list */
+.gesto-item, .canje-item, .review-item {
+  background: var(--card); border-radius: 12px; padding: 14px 16px;
+  margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; transition: transform 0.1s;
+}
+.gesto-item:active, .canje-item:active { transform: scale(0.98); }
+.gesto-item .name, .canje-item .name, .review-item .name { font-size: 0.95em; flex: 1; }
+.gesto-item .pts-badge, .canje-item .cost-badge {
+  background: var(--accent); color: var(--bg); border-radius: 20px;
+  padding: 4px 12px; font-weight: 700; font-size: 0.9em; min-width: 40px; text-align: center;
+}
+.canje-item .cost-badge { background: var(--gold); }
+
+/* Review actions */
+.review-item { flex-wrap: wrap; }
+.review-item .meta { font-size: 0.8em; color: var(--muted); width: 100%; margin-top: 6px; }
+.review-actions { display: flex; gap: 8px; margin-top: 8px; width: 100%; }
+.review-actions button {
+  flex: 1; padding: 10px; border: none; border-radius: 8px;
+  font-weight: 600; cursor: pointer; font-size: 0.9em;
+}
+.btn-approve { background: var(--success); color: white; }
+.btn-reject { background: var(--danger); color: white; }
+
+/* Pending list */
+.pending-item {
+  background: var(--card); border-radius: 10px; padding: 12px 16px; margin-bottom: 8px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.pending-item .status { font-size: 0.8em; padding: 3px 8px; border-radius: 6px; }
+.status-pending { background: #f39c12; color: #000; }
+.status-approved { background: var(--success); color: white; }
+.status-disputed { background: var(--danger); color: white; }
+.status-rejected { background: #7f8c8d; color: white; }
+
+.section-title { font-size: 1.1em; font-weight: 600; margin-bottom: 14px; color: var(--gold); }
+.empty-msg { text-align: center; color: var(--muted); padding: 30px; font-style: italic; }
+
+/* Toast */
+.toast {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--success); color: white; padding: 12px 24px; border-radius: 10px;
+  font-weight: 600; z-index: 200; opacity: 0; transition: opacity 0.3s;
+}
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="loginScreen" class="login-screen">
+  <div style="font-size:3em;margin-bottom:16px">🧭</div>
+  <h1>Pacto de Puntos</h1>
+  <p class="subtitle">Viaje al Sur — Marcos & Sofía</p>
+  <button class="login-btn" onclick="login('marcos')">🏔️ Marcos</button>
+  <button class="login-btn" onclick="login('sofi')">🌸 Sofía</button>
+</div>
+
+<!-- App -->
+<div id="app" style="display:none">
+  <div class="header">
+    <span class="user-info" id="userInfo"></span>
+    <button class="logout" onclick="logout()">Salir</button>
+  </div>
+  
+  <div class="scores">
+    <div class="score-card mine">
+      <div class="label">Mis puntos</div>
+      <div class="pts" id="myPts">0</div>
+    </div>
+    <div class="score-card other">
+      <div class="label" id="otherLabel">Otro</div>
+      <div class="pts" id="otherPts">0</div>
+    </div>
+  </div>
+
+  <div class="review-banner" id="reviewBanner">
+    ✨ ¡Momento de revisión! Revisá los gestos pendientes
+  </div>
+
+  <!-- Sections -->
+  <div id="secGestos" class="section active">
+    <div class="section-title">📝 Cargar gesto</div>
+    <div id="gestosList"></div>
+    <div class="section-title" style="margin-top:20px">⏳ Mis gestos pendientes</div>
+    <div id="myPendingList"></div>
+  </div>
+
+  <div id="secReview" class="section">
+    <div class="section-title">🔍 Revisar gestos</div>
+    <div id="reviewList"></div>
+  </div>
+
+  <div id="secCanjes" class="section">
+    <div class="section-title">🎁 Canjear puntos</div>
+    <div id="canjesList"></div>
+    <div class="section-title" style="margin-top:20px">📋 Canjes pendientes de aprobación</div>
+    <div id="pendingCanjesList"></div>
+    <div class="section-title" style="margin-top:20px">📜 Mis canjes</div>
+    <div id="myCanjesList"></div>
+  </div>
+
+  <div id="secHistory" class="section">
+    <div class="section-title">📊 Historial</div>
+    <div id="historyList"></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('Gestos')"><span class="icon">📝</span>Cargar</div>
+    <div class="tab" onclick="switchTab('Review')"><span class="icon">🔍</span>Revisar</div>
+    <div class="tab" onclick="switchTab('Canjes')"><span class="icon">🎁</span>Canjes</div>
+    <div class="tab" onclick="switchTab('History')"><span class="icon">📊</span>Historial</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let currentUser = localStorage.getItem('pacto-user');
+let config = { gestos: [], canjes: [] };
+
+async function init() {
+  const res = await fetch('/api/config');
+  config = await res.json();
+  if (currentUser) showApp();
+}
+
+function login(user) {
+  currentUser = user;
+  localStorage.setItem('pacto-user', user);
+  showApp();
+}
+
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('pacto-user');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+function showApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  const names = { marcos: '🏔️ Marcos', sofi: '🌸 Sofía' };
+  const otherNames = { marcos: 'Sofía', sofi: 'Marcos' };
+  document.getElementById('userInfo').textContent = names[currentUser];
+  document.getElementById('otherLabel').textContent = otherNames[currentUser];
+  renderGestos();
+  refresh();
+}
+
+function renderGestos() {
+  const el = document.getElementById('gestosList');
+  el.innerHTML = config.gestos.map(g => `
+    <div class="gesto-item" onclick="addGesto('${g.id}')">
+      <span class="name">${g.name}</span>
+      <span class="pts-badge">+${g.points}</span>
+    </div>
+  `).join('');
+}
+
+async function refresh() {
+  const res = await fetch(`/api/status?user=${currentUser}`);
+  const d = await res.json();
+  
+  document.getElementById('myPts').textContent = d.myPoints;
+  document.getElementById('otherPts').textContent = d.otherPoints;
+  
+  const banner = document.getElementById('reviewBanner');
+  banner.classList.toggle('active', d.review);
+  
+  // My pending
+  const mp = document.getElementById('myPendingList');
+  mp.innerHTML = d.myPending.length ? d.myPending.map(g => `
+    <div class="pending-item">
+      <span>${g.gestoName}</span>
+      <span class="status status-pending">⏳ +${g.points}</span>
+    </div>
+  `).join('') : '<div class="empty-msg">No tenés gestos pendientes</div>';
+  
+  // Review
+  const rl = document.getElementById('reviewList');
+  if (d.review && d.toReview.length) {
+    rl.innerHTML = d.toReview.map(g => `
+      <div class="review-item">
+        <span class="name">${g.gestoName} (+${g.points})</span>
+        <div class="meta">Cargado: ${new Date(g.timestamp).toLocaleString('es-AR')}</div>
+        <div class="review-actions">
+          <button class="btn-approve" onclick="reviewGesto(${g.id},'approve')">✅ Aprobar</button>
+          <button class="btn-reject" onclick="reviewGesto(${g.id},'reject')">❌ Rechazar</button>
+        </div>
+      </div>
+    `).join('');
+  } else if (d.review) {
+    rl.innerHTML = '<div class="empty-msg">No hay gestos para revisar 🎉</div>';
+  } else {
+    rl.innerHTML = '<div class="empty-msg">⏰ Revisión disponible a las 10am, 4pm y 10pm</div>';
+  }
+  
+  // Canjes
+  const cl = document.getElementById('canjesList');
+  cl.innerHTML = config.canjes.map(c => `
+    <div class="canje-item" onclick="addCanje('${c.id}')">
+      <span class="name">${c.name}</span>
+      <span class="cost-badge">${c.cost}⭐</span>
+    </div>
+  `).join('');
+  
+  // Pending canjes from other
+  const pcl = document.getElementById('pendingCanjesList');
+  pcl.innerHTML = d.pendingCanjes.length ? d.pendingCanjes.map(c => `
+    <div class="review-item">
+      <span class="name">${c.canjeName} (${c.cost}⭐)</span>
+      <div class="review-actions">
+        <button class="btn-approve" onclick="reviewCanje(${c.id},'approve')">✅ Aprobar</button>
+        <button class="btn-reject" onclick="reviewCanje(${c.id},'reject')">❌ Rechazar</button>
+      </div>
+    </div>
+  `).join('') : '<div class="empty-msg">Sin canjes pendientes</div>';
+  
+  // My canjes
+  const mcl = document.getElementById('myCanjesList');
+  mcl.innerHTML = d.myCanjes.length ? d.myCanjes.map(c => `
+    <div class="pending-item">
+      <span>${c.canjeName}</span>
+      <span class="status status-${c.status}">${c.status === 'pending' ? '⏳' : c.status === 'approved' ? '✅' : '❌'} ${c.cost}⭐</span>
+    </div>
+  `).join('') : '<div class="empty-msg">No canjeaste nada aún</div>';
+  
+  // History
+  const hl = document.getElementById('historyList');
+  const histItems = d.history.reverse();
+  hl.innerHTML = histItems.length ? histItems.map(g => `
+    <div class="pending-item">
+      <span>${g.user === currentUser ? '🙋' : '👤'} ${g.gestoName}</span>
+      <span class="status status-${g.status}">${g.status === 'approved' ? '✅' : g.status === 'disputed' ? '⚠️ Sirius' : '❌'} ${g.points}pts</span>
+    </div>
+  `).join('') : '<div class="empty-msg">Sin historial aún</div>';
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  refresh();
+}
+
+async function addGesto(gestoId) {
+  const res = await fetch('/api/gesto', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user: currentUser, gestoId })
+  });
+  if (res.ok) { toast('¡Gesto registrado! ✨'); refresh(); }
+}
+
+async function reviewGesto(id, action) {
+  const res = await fetch('/api/review', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user: currentUser, gestoDbId: id, action })
+  });
+  if (res.ok) { toast(action === 'approve' ? '✅ Aprobado!' : '⚠️ Enviado a Sirius'); refresh(); }
+}
+
+async function addCanje(canjeId) {
+  const res = await fetch('/api/canje', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user: currentUser, canjeId })
+  });
+  const data = await res.json();
+  if (res.ok) { toast('¡Canje solicitado! 🎁'); refresh(); }
+  else { toast(data.error || 'Error'); }
+}
+
+async function reviewCanje(id, action) {
+  const res = await fetch('/api/canje-review', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user: currentUser, canjeDbId: id, action })
+  });
+  if (res.ok) { toast(action === 'approve' ? '✅ Canje aprobado!' : '❌ Canje rechazado'); refresh(); }
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// Auto-refresh every 30s
+setInterval(refresh, 30000);
+init();
+</script>
+</body>
+</html>
